@@ -3,7 +3,9 @@ const chalk = require('chalk')
 const log = console.log
 
 exports.get = async (req, res) => {
-	const users = await User.find({}).then(users => res.json(users))
+	//.then(users => res.json(users))
+	const users = await User.find({})
+	res.json(users)
 }
 
 exports.post = async (req, res) => {

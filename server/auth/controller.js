@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const config = require('../../config/config')
 const User = require('../api/user/model')
+//const sendEmail = require('../mailgun/mail')
 
 exports.signUp = async (req, res) => {
 	const { firstname, lastname, email, password } = req.body
@@ -14,14 +15,18 @@ exports.signUp = async (req, res) => {
 		firstname,
 		lastname,
 		password: hashedPassword,
-		email
+		email,
+		validated: false
 	})
+
 	if (user) {
 		const newUser = await user.save()
 		// créer un token
-		const token = jwt.sign({ id: user._id }, config.secret.jwt, {
+		const token = jwt.sign({ id: user._id }, config.jwt.secret, {
 			expiresIn: 86400 // expires in 24 hours
 		})
+		//envoie du mail de validation du compte
+		//sendEmail(token, newUser.email)
 		//on lui renvoie pour le mettre dans le localstorage
 		res.status(200).send({ auth: true, token: token })
 	}
@@ -48,4 +53,15 @@ exports.signIn = async (req, res) => {
 
 exports.logOut = (req, res) => {
 	res.status(200).send({ auth: false, token: null })
+}
+
+exports.validateUser = async (res, req, next) => {
+	const { email } = req.params
+
+	const user = await User.findOneAndUpdate(
+		{ email },
+		{ validated: true },
+		{ new: true }
+	)
+	res.json(user)
 }

@@ -26,7 +26,7 @@ exports.post = async (req, res) => {
 
 exports.getOne = async (req, res) => {
 	const { id } = req.params
-	const user = await User.findOne({ _id: id }).then(user => res.json(user))
+	const user = await User.findById(id).then(user => res.json(user))
 }
 
 exports.put = async (req, res) => {

@@ -18,9 +18,18 @@ const userSchema = new Schema({
 	},
 	email: {
 		type: String,
-		//unique: true,
+		unique: true,
 		required: [true, 'un email est requis']
-	}
+	},
+
+	validated: { type: Boolean, default: false },
+
+	_rooms: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Room'
+		}
+	]
 })
 
 module.exports = mongoose.model('User', userSchema)

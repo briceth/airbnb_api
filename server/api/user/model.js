@@ -16,6 +16,7 @@ const userSchema = new Schema({
 		type: String,
 		required: [true, 'un password est requis']
 	},
+
 	email: {
 		type: String,
 		unique: true,
@@ -28,6 +29,13 @@ const userSchema = new Schema({
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Room'
+		}
+	],
+
+	_reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review'
 		}
 	]
 })

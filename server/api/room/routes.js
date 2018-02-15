@@ -3,11 +3,15 @@ const controller = require('./controller')
 const verifyToken = require('../../auth/auth').verifyToken
 const asyncMiddleware = require('../../middleware/asyncMiddleware')
 
-router.route('/').get(verifyToken, asyncMiddleware(controller.get))
+router.route('/').get(asyncMiddleware(controller.get))
 
 router
 	.route('/publish/:userId')
 	.post(verifyToken, asyncMiddleware(controller.post))
+
+router.route('/loc').get(asyncMiddleware(controller.getByLoc))
+router.route('/price').get(asyncMiddleware(controller.getByPriceRange))
+router.route('/rating').post(asyncMiddleware(controller.rating))
 
 router
 	.route('/:id')

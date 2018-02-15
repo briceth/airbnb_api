@@ -16,12 +16,13 @@ const roomSchema = new Schema({
 
 	price: { type: Number, required: [true, 'doit contenir un prix'] },
 
-	ratingValue: { type: Number, default: null },
+	ratingValue: { type: Number, default: null }, //moyenne générale des notes des reviews
 
-	reviews: { type: Number, default: 0 },
+	countReviews: { type: Number, default: 0 }, //nombre de reviews
 
 	city: {
 		type: String,
+		// lowercase: true,
 		required: [true, 'Doit contenir une ville']
 	},
 
@@ -33,7 +34,14 @@ const roomSchema = new Schema({
 	_user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
-	}
+	},
+
+	_reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review'
+		}
+	]
 })
 
 module.exports = mongoose.model('Room', roomSchema)

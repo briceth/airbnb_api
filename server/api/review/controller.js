@@ -18,24 +18,20 @@ exports.post = async (req, res) => {
 
 	const newReview = await review.save()
 
-	log(newReview)
-
-	log(typeof req.params.userId)
-
-	// const user = await User.findOneAndUpdate(
-	// 	{ _id: userId },
-	// 	{ _reviews: { $push: mongoose.Types.ObjectId(newReview._id) } },
-	// 	{ new: true }
-	// )
+	const user = await User.findOneAndUpdate(
+		{ _id: userId },
+		{ $push: { _reviews: newReview._id } },
+		{ new: true }
+	)
 
 	const room = await Room.findOneAndUpdate(
 		{ _id: roomId },
-		{ _reviews: { $push: mongoose.Types.ObjectId(newReview._id) } },
+		{ $push: { _reviews: newReview._id } },
 		{ new: true }
 	)
 
 	if (newReview) {
 		log(chalk.green('review CREATED with Success!'))
-		//res.json({ newReview, room: room._id, user: user._id })
+		res.json({ newReview, room: room._id, user: user._id })
 	}
 }

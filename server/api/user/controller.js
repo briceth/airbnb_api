@@ -3,7 +3,6 @@ const chalk = require('chalk')
 const log = console.log
 
 exports.get = async (req, res) => {
-	//.then(users => res.json(users))
 	const users = await User.find({})
 	res.json(users)
 }
@@ -18,10 +17,10 @@ exports.post = async (req, res) => {
 		lastname
 	})
 
-	user = await user.save().then(user => {
-		log(chalk.green('user CREATED with Success!'))
-		res.json(user)
-	})
+	user = await user.save()
+
+	log(chalk.green('user CREATED with Success!'))
+	res.json(user)
 }
 
 exports.getOne = async (req, res) => {
